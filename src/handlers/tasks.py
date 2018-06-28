@@ -20,13 +20,18 @@ def execute_jenkins(task, params):
     else:
         all_params = params[1:]
     try:
-        response = utilities.rest_request(task, method=task["method"], url=task["url"], auth=(task["username"], task["password"]), params=dict(s.split('=') for s in all_params))
-        print(response.status_code)
-        print(response.request)
-        print(response.content)
-        if response.status_code == 201:
-            return "I have executed the task successfully"
-        else:
-            return "It seems you have provided invalid parameter values"
-    except Exception as e:
+        if task["auth"] == "basic":
+            response = utilities.rest_request(task, method=task["method"], url=task["url"], auth=(task["username"], task["password"]), params=dict(s.split('=') for s in all_params))
+            if response.status_code == 201:
+                return "I have executed the task successfully"
+            else:
+                return "It seems you have provided invalid parameter values"
+        if task["auth"] == "crumb":
+            crumb_response = utilities.rest_request(task, method="GET", url=task["crumb_url"], auth=(task["username"], task["password"]))
+            response = utilities.rest_request(task, method=task["method"], url=task["url"], auth=(task["username"], task["password"]), params=dict(s.split('=') for s in all_params), headers={"Jenkins-Crumb": crumb_response.json()["crumb"]})
+            if response.status_code == 201:
+                return "I have executed the task successfully"
+            else:
+                return "It seems you have provided invalid parameter values"
+    except Exception:
         return "It seems you have provided invalid parameter values"
