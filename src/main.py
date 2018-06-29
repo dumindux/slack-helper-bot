@@ -10,18 +10,19 @@ import pretty_cron
 from cron_descriptor import get_description
 from slackclient import SlackClient
 import holidays
+import handlers.tasks
 
 # constants
 RTM_READ_DELAY = 1 # 1 second delay between reading from RTM
 MENTION_REGEX = "^<@(|[WU].+?)>(.*)"
 
-with open('config.json', 'r') as config_file:
+with open('config/config.json', 'r') as config_file:
     CONFIG = json.loads(config_file.read())
 
-with open('schedule.json', 'r') as jobs_file:
+with open('config/schedule.json', 'r') as jobs_file:
     JOBS = json.loads(jobs_file.read())
 
-with open('tasks.json', 'r') as tasks_file:
+with open('config/tasks.json', 'r') as tasks_file:
     TASKS = json.loads(tasks_file.read())
 
 # instantiate Slack client
@@ -90,6 +91,7 @@ def handle_command(user, command, channel):
                    "- *schedule <job_name>* - _Get the scheduled time of a specific job_\n" \
                    "- *holidays* - _Get the list of US holidays for the year_\n" \
                    "- *calc <expression>* - _Do a calculation_\n" \
+                   "- *execute <job_name> <optional parameters>* - _Execute a predifined job_\n" \
                    "Use *@Xarvis _command_* to ask me something"
     elif command.lower().startswith("holidays"):
         now = datetime.datetime.now()
@@ -111,18 +113,14 @@ def handle_command(user, command, channel):
     elif "hi" in command.lower() or "hey" in command.lower():
         response = "Hey <@" + user + ">, Try _*@Xarvis help*_ to see what I can help you with"
     elif command.lower().startswith("execute"):
-        response = execute_job(command.lower().trim()[7:])
+        response = handlers.tasks.execute_task(command.lower().strip()[8:].split(" "), TASKS)
     
-
     # Sends the response back to the channel
     SLACK_CLIENT.api_call(
         "chat.postMessage",
         channel=channel,
         text=response or default_response
     )
-
-def execute_task(params):
-
 
 if __name__ == "__main__":
     if SLACK_CLIENT.rtm_connect(with_team_state=False):
