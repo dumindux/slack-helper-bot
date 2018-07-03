@@ -1,0 +1,9 @@
+{
+  "health-check": {
+    "name": "health-check",
+    "title": "Health Check",
+    "type": "rest-request",
+    "enabled": true,
+    "sequence": "30 01 * * *"
+  }
+}

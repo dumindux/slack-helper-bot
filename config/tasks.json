@@ -1,0 +1,23 @@
+{
+    "job1": {
+        "method": "GET",
+        "type": "jenkins",
+        "auth": "basic",
+        "username": "xarvis",
+        "password": "bumblebeetuna",
+        "channel": "C070NR8HP",
+        "url": "<job_url>",
+        "params": "token=lqawIVidZC4TOSKLGQWWo3PmCig"
+    },
+    "job2": {
+        "method": "POST",
+        "type": "jenkins",
+        "auth": "crumb",
+        "crumb_url": "<url_for_json>",
+        "username": "xarvis",
+        "password": "bumblebeetuna",
+        "channel": "C7XUFSX09",
+        "url": "<job_url>",
+        "params": "token=sjdklflksdlkfkd"
+    }
+}
