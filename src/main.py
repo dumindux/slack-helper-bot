@@ -104,7 +104,7 @@ def handle_command(user, command, channel):
                 response = "Job scheduled time(s)\n" + partial_reponse
     elif command.lower().startswith("help"):
         response = "Hey there, following are the queries that I am trained to help you with as of now,\n" \
-                   "- *schedule list* - _Get a list of scheduled payment related job titles (ach, ledger etc)_\n" \
+                   "- *schedule list* - _Get a list of cron pattern based scheduled jobs stored_\n" \
                    "- *schedule <job_name>* - _Get the scheduled time of a specific job_\n" \
                    "- *holidays* - _Get the list of US holidays for the year_\n" \
                    "- *calc <expression>* - _Do a calculation_\n" \
