@@ -34,6 +34,12 @@ def parse_bot_commands(slack_events):
         Parses a list of events coming from the Slack RTM API to find bot commands.
         If a bot command is found, this function returns a tuple of command and channel.
         If its not found, then this function returns None, None.
+
+        Args:
+            slack_events: Event from Slack
+
+        Returns:
+            Parsed information
     """
     for event in slack_events:
         print(event)
@@ -51,6 +57,12 @@ def parse_direct_mention(message_text):
     """
         Finds a direct mention (a mention that is at the beginning) in message text
         and returns the user ID which was mentioned. If there is no direct mention, returns None
+
+        Args:
+            message_text: Message received from Slack
+
+        Returns:
+            Parsed username and message
     """
     matches = re.search(MENTION_REGEX, message_text)
     # the first group contains the username, the second group contains the remaining message
@@ -60,6 +72,11 @@ def parse_direct_mention(message_text):
 def handle_command(user, command, channel):
     """
         Executes bot command if the command is known
+
+        Args:
+            user: Slack user ID
+            command: Command string
+            channel: Originating Slack channel
     """
     # Default response is help text for the user
     default_response = "Sorry, I am not sure what you mean. Try _*@Xarvis help*_ to see what I can help you with\n"
@@ -114,7 +131,7 @@ def handle_command(user, command, channel):
         response = "Hey <@" + user + ">, Try _*@Xarvis help*_ to see what I can help you with"
     elif command.lower().startswith("execute"):
         response = handlers.tasks.execute_task(command.lower().strip()[8:].split(" "), TASKS)
-    
+
     # Sends the response back to the channel
     SLACK_CLIENT.api_call(
         "chat.postMessage",

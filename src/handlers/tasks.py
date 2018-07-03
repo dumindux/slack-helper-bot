@@ -2,17 +2,17 @@
 
 import utilities
 
-"""
-executes a task
-
-Args:
-    params: Parameters passed by a user to the bot
-    tasks: List of tasks that can be executed by the bot
-
-Returns:
-    Message to be sent to the user
-"""
 def execute_task(params, tasks):
+    """
+        Executes a task
+
+        Args:
+            params: Parameters passed by a user to the bot
+            tasks: List of tasks that can be executed by the bot
+
+        Returns:
+            Message to be sent to the user
+    """
     if params[0] in tasks:
         task = tasks[params[0]]
 
@@ -23,17 +23,17 @@ def execute_task(params, tasks):
     else:
         return "I am sorry I cannot identify this task"
 
-"""
-executes a Jenkins job
-
-Args:
-    task: Task associated with the user command
-    params: Parameters passed by a user to the bot
-
-Returns:
-     Message to be sent to the user
-"""
 def execute_jenkins(task, params):
+    """
+        Executes a Jenkins job
+
+        Args:
+            task: Task associated with the user command
+            params: Parameters passed by a user to the bot
+
+        Returns:
+            Message to be sent to the user
+    """
     if "params" in task:
         all_params = task["params"].split('&') + params[1:]
     else:
